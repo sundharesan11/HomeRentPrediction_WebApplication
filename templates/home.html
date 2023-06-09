@@ -5,7 +5,266 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    html {
+    height: 100%;
+    }
+    body {
+    margin: 30px;
+    padding:0;
+    font-family: sans-serif;
+    background: linear-gradient(#141e30, #243b55);
+    }
+
+    .input-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    padding: 40px;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,.5);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 10px;
+    }
+
+    .input-box h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: #b7d822;
+    text-align: center;
+    }
+
+    .input-box .user-box
+    {
+    position: relative;
+    
+    }
+
+    .input-box .user-box input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 20px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+    background: transparent;
+    }
+
+
+    .input-box .user-box label {
+    position: absolute;
+    top:0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 15px;
+    color: #fff;
+    pointer-events: none;
+    transition: .5s;
+    margin-right: 5px;
+    display: flex;
+    align-items: center;
+    }
+
+    .input-box .user-box input:focus ~ label,
+    .input-box .user-box input:valid ~ label {
+    top: -20px;
+    left: 0;
+    color: #03e9f4;
+    font-size: 12px;
+    }
+
+    .input-box form a {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #03e9f4;
+    font-size: 17px;
+    text-decoration: none;
+    overflow: hidden;
+    transition: .5s;
+    margin-top: 40px;
+    letter-spacing: 2px
+    }
+
+    .input-box a:hover {
+    background: #7bb818;
+    color: #fff;
+    border-radius: 5px;
+    
+    }
+
+    .input-box a span {
+    position: absolute;
+    display: block;
+    }
+
+    .input-box a span:nth-child(1) {
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #a1e13c);
+    animation: btn-anim1 1s linear infinite;
+    }
+
+    @keyframes btn-anim1 {
+    0% {
+        left: -100%;
+    }
+    50%,100% {
+        left: 100%;
+    }
+    }
+
+    .input-box a span:nth-child(2) {
+    top: -100%;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(180deg, transparent, #b3de48);
+    animation: btn-anim2 1s linear infinite;
+    animation-delay: .25s
+    }
+
+    @keyframes btn-anim2 {
+    0% {
+        top: -100%;
+    }
+    50%,100% {
+        top: 100%;
+    }
+    }
+
+    .input-box a span:nth-child(3) {
+    bottom: 0;
+    right: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(270deg, transparent, #88d639);
+    animation: btn-anim3 1s linear infinite;
+    animation-delay: .5s
+    }
+
+    @keyframes btn-anim3 {
+    0% {
+        right: -100%;
+    }
+    50%,100% {
+        right: 100%;
+    }
+    }
+
+    .input-box a span:nth-child(4) {
+    bottom: -100%;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: linear-gradient(360deg, transparent, #92c221);
+    animation: btn-anim4 1s linear infinite;
+    animation-delay: .75s
+    }
+
+    @keyframes btn-anim4 {
+    0% {
+        bottom: -100%;
+    }
+    50%,100% {
+        bottom: 100%;
+    }
+    }
+    .scale {
+    font-size: 0.7em;
+    color: #fff;
+    
+    margin-left: 25px;
+    }
+</style>
+
+<script>
+    function handleClick() {
+      // Hide the submit button
+      var button = document.getElementById('submit-button');
+      button.style.display = 'none';
+      
+      // Show the result
+      var result = document.getElementById('result');
+      result.style.display = 'block';
+    }
+
+    function validateInput(name, minValue, maxValue) {
+        var input = document.getElementsByName(name)[0];
+        var value = parseInt(input.value);
+
+        if (isNaN(value) || value < minValue || value > maxValue) {
+            input.setCustomValidity("Please enter a valid value between " + minValue + " and " + maxValue + ".");
+            input.reportValidity();
+        } else {
+            input.setCustomValidity("");
+        }
+    }
+
+</script>
+    
+
 <body>
-    <h1>Hello world</h1>
+    
+    <div class="input-box">
+        <h2>House Rent Prediction</h2>
+        <form action="{{url_for('predict')}}" method="post">
+          <div class="user-box">
+            <input type="number" name="BHK"  required="required"  min="1" max="10" oninput= "validateInput('BHK', 1, 10)">
+            <label>BHK (Bedroom Hall Kitchen) <span class="scale">Scale (1-10)</span></label>
+            
+          </div>
+          <div class="user-box">
+            <input type="number" name="Floor" required="required"  min="1" max="50" oninput="validateInput('Floor', 1, 50)">
+            <label>Preferred Floor<span class="scale">Scale (1-50)</span></label>
+          </div>
+          <div class="user-box">
+            <input type="number" name="Area Type" required="required"  min="0" max="2" oninput="validateInput('Area Type', 0, 2)">
+            <label>Area Type<span class="scale">{0 -> Built Area, 1 -> Carpet Area, 2 -> Super Area}</span></label>
+          </div>
+          <div class="user-box">
+            <input type="number" name="City" required="required"  min="0" max="5" oninput="validateInput('City', 0, 5)">
+            <label>City<span class="scale">{0 -> Bangalore, 1 -> Chennai, 2 -> Delhi, 3 -> Hyderabad, 4 -> Kolkata, 5 -> Mumbai}</span></label>
+          </div>
+          <div class="user-box">
+            <input type="number" name="Furnishing Status" required="required"  min="0" max="2" oninput="validateInput('Furnishing Status', 0, 2)">
+            <label>Furnishing Status<span class="scale">{0 -> Furnished, 1 -> Semi-Furnished, 2 -> Unfurnished}</span></label>
+          </div>
+          <div class="user-box">
+            <input type="number" name="Tenant Preferred" required="required"  min="0" max="2" oninput="validateInput('Tenant Preferred', 0, 2)">
+            <label>Featured tenants type<span class="scale">{0 -> Bachelors, 1 -> Bachelors/Family, 2 -> Family}</span></label>
+          </div>
+          <div class="user-box">
+            <input type="number" name="Bathroom" required="required"  min="1" max="10" oninput="validateInput('Bathroom', 1, 10)">
+            <label>Bathrooms required<span class="scale">Scale(1-10)</span></label>
+          </div>
+          <div class="user-box">
+            <input type="number" name="Total Floors" required="required"  min="1" max="50" oninput="validateInput('Total Floors', 1, 50)">
+            <label>How many floors can be present in that property?<span class="scale">Scale(1-50)</span></label>
+          </div>
+          <div class="user-box">
+            <input type="number" name="Size_log" required="required"  min="0" max="10" oninput="validateInput('Size_log', 0, 10)">
+            <label>Size of property<span class="scale">Scale(0-10)</span></label>
+          </div>
+          
+          <a>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <button type="submit" id="submit-button" onclick="handleClick()">Predict</button>
+            <div id="result" style="display: none;">{{prediction_text}}</div>
+          </a>
+          
+          
+        </form>
+      </div>
+      
 </body>
 </html>

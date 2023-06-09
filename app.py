@@ -22,5 +22,13 @@ def predict_api():
     return jsonify(output[0])
 
 
+@app.route('/predict', methods = ['POST'])
+def predict():
+    data = [float(x) for x in request.form.values()]
+    input = scaler.transform(np.array(data).reshape(1,-1))
+    print(input)
+    output = rfrmodel.predict(input)
+    return render_template("home.html", prediction_text="The predicted house rent is Rs.{} per month".format(int(output[0])))
+
 if __name__ =="__main__":
     app.run(debug=True)
