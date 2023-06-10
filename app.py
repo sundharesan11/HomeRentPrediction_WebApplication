@@ -28,7 +28,7 @@ def predict():
     input = scaler.transform(np.array(data).reshape(1,-1))
     print(input)
     output = rfrmodel.predict(input)
-    return render_template("home.html", prediction_text="The predicted house rent is Rs.{} per month".format(int(output[0])))
+    return render_template("index.html", prediction_text="The predicted house rent is Rs.{} per month".format(int(output[0])))
 
 if __name__ =="__main__":
     app.run(debug=True)
