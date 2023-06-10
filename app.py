@@ -5,7 +5,7 @@ import pandas as pd
 
 app = Flask(__name__)
 rfrmodel = pickle.load(open('RFReg.pkl', 'rb'))
-scaler = pickle.load(open("scaled.pkl", "rb"))
+scaler = pickle.load(open('scaled.pkl', 'rb'))
 
 @app.route('/')
 def home():
@@ -25,10 +25,12 @@ def predict_api():
 @app.route('/predict', methods = ['POST'])
 def predict():
     data = [float(x) for x in request.form.values()]
+    print(data)
     input = scaler.transform(np.array(data).reshape(1,-1))
     print(input)
     output = rfrmodel.predict(input)
+    print(output[0])
     return render_template("home.html", prediction_text="The predicted house rent is Rs.{} per month".format(int(output[0])))
 
 if __name__ =="__main__":
-    app.run(debug=False)
+    app.run(debug=True)

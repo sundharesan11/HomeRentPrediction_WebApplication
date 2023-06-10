@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
@@ -179,49 +180,25 @@
     .scale {
     font-size: 0.7em;
     color: #fff;
-    
     margin-left: 25px;
     }
+    
 </style>
 
-<script>
-    function handleClick() {
-      // Hide the submit button
-      var button = document.getElementById('submit-button');
-      button.style.display = 'none';
-      
-      // Show the result
-      var result = document.getElementById('result');
-      result.style.display = 'block';
-    }
 
-    function validateInput(name, minValue, maxValue) {
-        var input = document.getElementsByName(name)[0];
-        var value = parseInt(input.value);
-
-        if (isNaN(value) || value < minValue || value > maxValue) {
-            input.setCustomValidity("Please enter a valid value between " + minValue + " and " + maxValue + ".");
-            input.reportValidity();
-        } else {
-            input.setCustomValidity("");
-        }
-    }
-
-</script>
-    
 
 <body>
     
     <div class="input-box">
         <h2>House Rent Prediction</h2>
-        <form action="{{url_for('predict')}}" method="post">
+        <form action="{{url_for('predict')}}" method="post" autocomplete="off" >
           <div class="user-box">
-            <input type="number" name="BHK"  required="required"  min="1" max="10" oninput= "validateInput('BHK', 1, 10)">
+            <input id="input-field" type="number" name="BHK"  required="required"  min="1" max="10" oninput= "validateInput('BHK', 1, 10)">
             <label>BHK (Bedroom Hall Kitchen) <span class="scale">Scale (1-10)</span></label>
             
           </div>
           <div class="user-box">
-            <input type="number" name="Floor" required="required"  min="1" max="50" oninput="validateInput('Floor', 1, 50)">
+            <input id="input-field" type="number" name="Floor" required="required"  min="1" max="50" oninput="validateInput('Floor', 1, 50)">
             <label>Preferred Floor<span class="scale">Scale (1-50)</span></label>
           </div>
           <div class="user-box">
@@ -253,18 +230,49 @@
             <label>Size of property<span class="scale">Scale(0-10)</span></label>
           </div>
           
-          <a>
+          <a id="submit-button">
             <span></span>
             <span></span>
             <span></span>
             <span></span>
             <button type="submit" id="submit-button" onclick="handleClick()">Predict</button>
-            <div id="result" style="display: none;">{{prediction_text}}</div>
+            <div id="result">{{prediction_text}}</div>
           </a>
+
           
           
         </form>
+        
+        
       </div>
       
 </body>
+
+<script>
+  function validateInput(name, minValue, maxValue) {
+      var input = document.getElementsByName(name)[0];
+      var value = parseInt(input.value);
+
+      if (isNaN(value) || value < minValue || value > maxValue) {
+          input.setCustomValidity("Please enter a valid value between " + minValue + " and " + maxValue + ".");
+          input.reportValidity();
+      } else {
+          input.setCustomValidity("");
+      }
+  }
+  function handleClick() {
+    // Hide the submit button
+    var button = document.getElementById('submit-button');
+    button.style.display = 'none';
+
+    var inputField = document.getElementById('input-field');
+    var inputValue = inputField.value;
+
+    var result = document.getElementById('result');
+    result.style.display = 'block';
+
+  }
+
+</script>
+  
 </html>
